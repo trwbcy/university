@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TRWBCY / Sistem Informasi</title>
+<meta name="description" content="Workspace kuliah editorial untuk Sistem Informasi Universitas Terbuka — jadwal, tugas, uang, dan riwayat belajar lintas semester.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlpill">studio-si.web</span></div>
+
+  <div class="wrap">
+    <div class="masthead">
+      <div class="wordmark">TRWBCY/SISTEM INFORMASI</div>
+      <div id="nav" class="nav"></div>
+    </div>
+
+    <div id="sembar" class="sembar"></div>
+
+    <div id="view"></div>
+
+    <div class="footer">
+      <span class="note">Data kuliahmu — jadwal, tugas, uang — tersimpan per semester. Sesekali ekspor backup sebagai jaring pengaman.</span>
+      <span id="syncState" class="sync-state sync-off">○</span>
+      <button class="iconbtn bordered" onclick="App.exportData()">↓ Ekspor backup</button>
+      <label class="iconbtn bordered">↑ Impor backup<input type="file" accept="application/json" style="display:none;" onchange="App.importData(this)"></label>
+      <button class="iconbtn bordered" id="authBtn" style="display:none;" onclick="App.showAuth('in')">Masuk / Keluar</button>
+    </div>
+  </div>
+
+  <div id="authModal" class="modal-bg" style="display:none;"></div>
+
+  <!-- Supabase JS (dipakai hanya bila config terisi) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- modul aplikasi, urut: config -> store -> ui -> glossary -> app -->
+  <script src="js/config.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/glossary.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    // tampilkan tombol auth hanya di mode cloud
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if (window.Store && Store.isCloud && Store.isCloud()) {
+          var b = document.getElementById('authBtn'); if (b) b.style.display = '';
+        }
+      }, 300);
+    });
+  </script>
+</body>
+</html>
