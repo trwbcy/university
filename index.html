@@ -12,8 +12,6 @@
 </head>
 <body>
 
-  <div class="topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlpill">university-trwbcy.web</span></div>
-
   <div class="wrap">
     <div class="masthead">
       <div class="wordmark">TRWBCY/SISTEM INFORMASI</div>
@@ -25,11 +23,8 @@
     <div id="view"></div>
 
     <div class="footer">
-      <span class="note">Data kuliahmu — jadwal, tugas, uang — tersimpan per semester. Sesekali ekspor backup sebagai jaring pengaman.</span>
-      <span id="syncState" class="sync-state sync-off">○</span>
-      <button class="iconbtn bordered" onclick="App.exportData()">↓ Ekspor backup</button>
-      <label class="iconbtn bordered">↑ Impor backup<input type="file" accept="application/json" style="display:none;" onchange="App.importData(this)"></label>
-      <button class="iconbtn bordered" id="authBtn" style="display:none;" onclick="App.showAuth('in')">Masuk / Keluar</button>
+      <span class="note">Data kuliahmu tersimpan otomatis di cloud, per semester.</span>
+      <button class="iconbtn bordered" id="authBtn" style="display:none;" onclick="App.authAction()">Masuk</button>
     </div>
   </div>
 
@@ -44,16 +39,5 @@
   <script src="js/ui.js"></script>
   <script src="js/glossary.js"></script>
   <script src="js/app.js"></script>
-
-  <script>
-    // tampilkan tombol auth hanya di mode cloud
-    window.addEventListener('load', function () {
-      setTimeout(function () {
-        if (window.Store && Store.isCloud && Store.isCloud()) {
-          var b = document.getElementById('authBtn'); if (b) b.style.display = '';
-        }
-      }, 300);
-    });
-  </script>
 </body>
 </html>

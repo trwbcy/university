@@ -137,18 +137,38 @@
     if (d && d.kind === 'semester' && STATE.tab !== 'gloss') {
       html = html.replace('<div class="page', draftHtml + '<div class="page');
     }
-    document.getElementById('view').innerHTML = html;
-    renderSync();
+    var view = document.getElementById('view');
+    view.innerHTML = html;
+    // fade halus tiap render
+    view.classList.remove('view-anim');
+    void view.offsetWidth; // paksa reflow biar animasi re-trigger
+    view.classList.add('view-anim');
+    setupReveal();
+    renderAuthBtn();
   }
 
-  function renderSync() {
-    var el = document.getElementById('syncState'); if (!el) return;
-    if (Store.isCloud()) {
-      if (STATE.session) { el.className = 'sync-state sync-on'; el.textContent = '● Tersinkron ke cloud'; }
-      else { el.className = 'sync-state sync-off'; el.textContent = '○ Belum masuk'; }
-    } else {
-      el.className = 'sync-state sync-off'; el.textContent = '○ Mode lokal (browser ini)';
+  /* ---- reveal saat elemen masuk layar ---- */
+  var _revealObserver = null;
+  function setupReveal() {
+    if (typeof IntersectionObserver === 'undefined') return;
+    if (!_revealObserver) {
+      _revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); _revealObserver.unobserve(e.target); }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
     }
+    var view = document.getElementById('view');
+    var targets = view.querySelectorAll('.reveal');
+    targets.forEach(function (el) { _revealObserver.observe(el); });
+  }
+
+  function renderAuthBtn() {
+    var btn = document.getElementById('authBtn'); if (!btn) return;
+    if (!Store.isCloud()) { btn.style.display = 'none'; return; }
+    btn.style.display = '';
+    if (STATE.session) { btn.textContent = 'Keluar'; }
+    else { btn.textContent = 'Masuk'; }
   }
 
   function refresh() {
@@ -234,14 +254,16 @@
     deleteTx: function (id) { Store.remove('tx', id).then(refresh); },
     deleteSession: function (id) { Store.remove('schedule', id).then(refresh); },
 
-    exportData: function () { Store.exportData(); },
-    importData: function (input) {
-      var file = input.files && input.files[0]; if (!file) return;
-      Store.importData(file).then(refresh).catch(function (e) { alert('Gagal impor: ' + (e.message || e)); });
-      input.value = '';
-    },
-
     /* ---- AUTH (cloud) ---- */
+    authAction: function () {
+      if (STATE.session) {
+        if (confirm('Keluar dari akun? Datamu tetap aman tersimpan di cloud dan bisa dibuka lagi setelah masuk.')) {
+          Store.auth.signOut().then(function () { location.reload(); });
+        }
+      } else {
+        Auth.open('in');
+      }
+    },
     showAuth: function (mode) { Auth.open(mode || 'in'); },
     signOut: function () { Store.auth.signOut().then(function () { location.reload(); }); }
   };

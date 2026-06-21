@@ -48,13 +48,13 @@
       + '<div class="ghost-num">' + esc(sem.code) + '</div>'
       + '<div class="hero-title">' + esc(heroLine1(sem.title)) + '<span class="accent">.</span></div>'
       + '<div class="hero-sub"><span class="rule"></span><span class="txt">Sistem Informasi · Universitas Terbuka — ' + esc(sem.sks) + ' SKS, ' + v.courseCount + ' mata kuliah, satu tujuan yang dijaga pelan-pelan.</span></div>'
-      + '<div class="stats">'
+      + '<div class="stats reveal">'
       + stat(sem.ipk != null ? sem.ipk.toFixed(2) : '—', 'Target / IPK')
       + stat(pad(v.doneCount), 'Tugas Selesai')
       + stat(pad(v.aktif), 'Tugas Aktif', true)
       + '</div>'
-      + '<div class="section"><div class="section-head"><div class="seclabel">Sesi Belajar — ' + esc(v.todayName) + '</div><div class="row-sub">' + esc(v.todayDate) + '</div></div>' + sessions + '</div>'
-      + '<div class="section"><div class="seclabel" style="margin-bottom:18px;">Deadline Terdekat</div>' + deadlines + '</div>'
+      + '<div class="section reveal"><div class="section-head"><div class="seclabel">Sesi Belajar — ' + esc(v.todayName) + '</div><div class="row-sub">' + esc(v.todayDate) + '</div></div>' + sessions + '</div>'
+      + '<div class="section reveal"><div class="seclabel" style="margin-bottom:18px;">Deadline Terdekat</div>' + deadlines + '</div>'
       + '</div>';
   };
   function heroLine1(title) { return title.toUpperCase(); }
@@ -80,7 +80,7 @@
         + (day.isToday ? '<div style="font:800 10px/1 var(--body); letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-top:8px;">● Hari ini</div>' : '')
         + '</div><div>' + items + '</div></div>';
     }).join('');
-    return '<div class="page">' + pageHead('Minggu Ini', 'JADWAL', 'App.add(\'session\')', '+ Tambah sesi') + (draftHtml || '') + '<div style="margin-top:12px;">' + rows + '</div></div>';
+    return '<div class="page">' + pageHead('Minggu Ini', 'JADWAL', 'App.add(\'session\')', '+ Tambah sesi') + (draftHtml || '') + UI.timelineSVG() + '<div style="margin-top:12px;">' + rows + '</div></div>';
   };
 
   /* ---- TUGAS ---- */
@@ -213,6 +213,52 @@
     return '<div class="formcard">' + inner
       + '<div class="form-actions"><button class="btn btn-primary" onclick="App.saveDraft()">' + (editing ? 'Simpan' : (addLabel || 'Tambah')) + '</button><button class="btn btn-ghost" onclick="App.cancelDraft()">Batal</button></div></div>';
   }
+
+  /* ---- TIMELINE SVG (alur registrasi + kalender, tema editorial) ---- */
+  UI.timelineSVG = function () {
+    function box(x, y, w, title, sub, variant) {
+      var cls = variant === 'ink' ? 'tl-box-ink' : (variant === 'accent' ? 'tl-box-accent' : 'tl-box');
+      var tcls = variant === 'ink' ? 'tl-title-inv' : 'tl-title';
+      var scls = variant === 'ink' ? 'tl-sub-inv' : (variant === 'accent' ? 'tl-sub-accent' : 'tl-sub');
+      var cx = x + w / 2;
+      return '<rect class="' + cls + '" x="' + x + '" y="' + y + '" width="' + w + '" height="58" rx="8"/>'
+        + '<text class="' + tcls + '" x="' + cx + '" y="' + (y + 24) + '" text-anchor="middle">' + title + '</text>'
+        + '<text class="' + scls + '" x="' + cx + '" y="' + (y + 43) + '" text-anchor="middle">' + sub + '</text>';
+    }
+    function harrow(x1, x2, y) { return '<line class="tl-arrow" x1="' + x1 + '" y1="' + y + '" x2="' + x2 + '" y2="' + y + '" marker-end="url(#tlArrow)"/>'; }
+    function varrow(x, y1, y2) { return '<line class="tl-arrow" x1="' + x + '" y1="' + y1 + '" x2="' + x + '" y2="' + y2 + '" marker-end="url(#tlArrow)"/>'; }
+
+    var svg = '<svg viewBox="0 0 680 520" role="img" xmlns="http://www.w3.org/2000/svg">'
+      + '<title>Alur registrasi dan kalender akademik semester ganjil 2026</title>'
+      + '<desc>Lima langkah registrasi mahasiswa baru, lalu enam tahap kalender semester dari registrasi sampai nilai keluar.</desc>'
+      + '<defs><marker id="tlArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>'
+
+      + '<text class="tl-head" x="40" y="34">Alur registrasi mahasiswa baru</text>'
+      + box(40, 54, 180, '1. Pilih mata kuliah', 'di MyUT, maks 20 SKS', 'accent')
+      + box(250, 54, 180, '2. Registrasi', 'batas 5 Agu', 'accent')
+      + box(460, 54, 180, '3. Bayar uang kuliah', 'batas 7 Agu, lunas', 'accent')
+      + harrow(220, 248, 83) + harrow(430, 458, 83)
+      + '<path class="tl-arrow" d="M550 112 L550 125 L340 125 L340 138" marker-end="url(#tlArrow)"/>'
+      + box(250, 140, 180, '4. Aktivasi Tuton', 'batas 24 Agu', 'accent')
+      + box(40, 140, 180, '5. Mulai belajar', 'OSMB lalu Tuton', 'ink')
+      + harrow(250, 222, 169)
+
+      + '<line class="tl-rule" x1="40" y1="232" x2="640" y2="232"/>'
+
+      + '<text class="tl-head" x="40" y="268">Kalender semester ganjil 2026</text>'
+      + box(40, 288, 180, 'Registrasi & bayar', '1 Jun sampai 7 Agu', 'plain')
+      + box(250, 288, 180, 'OSMB & orientasi', 'sampai 23 Agu', 'plain')
+      + box(460, 288, 180, 'Tuton 8 sesi', '14 Sep sampai 23 Nov', 'plain')
+      + harrow(220, 248, 317) + harrow(430, 458, 317) + varrow(550, 346, 372)
+      + box(460, 374, 180, 'UAS', '28 Nov sampai 13 Des', 'ink')
+      + box(250, 374, 180, 'Cetak KTPU', 'sebelum 28 Nov', 'accent')
+      + box(40, 374, 180, 'Nilai keluar', '6 Jan 2027', 'plain')
+      + harrow(460, 432, 403) + harrow(250, 222, 403)
+
+      + '<text class="tl-sub" x="40" y="464">Kotak vermilion menandai langkah penting. Kotak hitam adalah hasil atau titik puncak.</text>'
+      + '</svg>';
+    return '<div class="timeline-block reveal">' + svg + '</div>';
+  };
 
   window.UI = UI;
 })();
