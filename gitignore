@@ -1,0 +1,17 @@
+# Backup data pribadi (berisi jadwal, tugas, keuangan asli) — JANGAN di-commit
+trwbcy-si-backup*.json
+*-backup-*.json
+
+# Kredensial RAHASIA (kalau suatu saat kamu pakai) — JANGAN PERNAH di-commit
+# Catatan: anon key Supabase di js/config.js AMAN publik (dilindungi RLS).
+# Yang dilarang keras: service_role key & password database.
+service_role*.txt
+*.secret
+.env
+.env.*
+
+# Sampah OS / editor
+.DS_Store
+Thumbs.db
+*.log
+.vscode/

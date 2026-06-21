@@ -37,34 +37,12 @@
     var sid = 's_smt1';
     return {
       semesters: [
-        { id: sid, code: '01', title: 'Semester Pertama', sks: 18, ipk: null, active: true, order: 1 }
+        { id: sid, code: '01', title: 'Semester Pertama', sks: 0, ipk: null, active: true, order: 1 }
       ],
-      budgets: { [sid]: 1500000 },
-      schedule: [
-        { id: uid('s'), semester_id: sid, day: 1, time: '19.30', type: 'Tuton', course: 'Pengantar Sistem Informasi', meta: 'Diskusi 6' },
-        { id: uid('s'), semester_id: sid, day: 2, time: '19.30', type: 'Tuweb', course: 'Matematika Diskrit', meta: 'Sesi 6' },
-        { id: uid('s'), semester_id: sid, day: 3, time: '20.00', type: 'Tuton', course: 'Konsep Teknologi Informasi', meta: 'Tugas 2' },
-        { id: uid('s'), semester_id: sid, day: 4, time: '19.30', type: 'Tuweb', course: 'Bahasa Inggris', meta: 'Sesi 6' },
-        { id: uid('s'), semester_id: sid, day: 5, time: '19.00', type: 'Tuweb', course: 'Algoritma & Pemrograman', meta: 'Sesi 6' },
-        { id: uid('s'), semester_id: sid, day: 6, time: '10.00', type: 'TTM', course: 'Pendidikan Pancasila', meta: 'Pertemuan 6' }
-      ],
-      tasks: [
-        { id: uid('t'), semester_id: sid, title: 'Tugas 2 Tuton', course: 'Algoritma & Pemrograman', due: '2026-06-21', done: false, done_at: null },
-        { id: uid('t'), semester_id: sid, title: 'Diskusi 6', course: 'Matematika Diskrit', due: '2026-06-23', done: false, done_at: null },
-        { id: uid('t'), semester_id: sid, title: 'Resume Modul 4', course: 'Pengantar Sistem Informasi', due: '2026-06-25', done: false, done_at: null },
-        { id: uid('t'), semester_id: sid, title: 'Latihan Grammar', course: 'Bahasa Inggris', due: '2026-06-27', done: false, done_at: null },
-        { id: uid('t'), semester_id: sid, title: 'Esai Pancasila', course: 'Pendidikan Pancasila', due: '2026-06-30', done: false, done_at: null },
-        { id: uid('t'), semester_id: sid, title: 'Tugas 1 Tuton', course: 'Konsep Teknologi Informasi', due: '2026-06-14', done: true, done_at: '2026-06-13' },
-        { id: uid('t'), semester_id: sid, title: 'Quiz Modul 3', course: 'Algoritma & Pemrograman', due: '2026-07-04', done: false, done_at: null }
-      ],
-      tx: [
-        { id: uid('x'), semester_id: sid, date: '2026-06-18', title: 'Uang saku bulanan', category: 'Pemasukan', amount: 1000000, kind: 'in' },
-        { id: uid('x'), semester_id: sid, date: '2026-06-18', title: 'Bayar kos', category: 'Kos', amount: 700000, kind: 'out' },
-        { id: uid('x'), semester_id: sid, date: '2026-06-19', title: 'Makan & jajan', category: 'Makan', amount: 85000, kind: 'out' },
-        { id: uid('x'), semester_id: sid, date: '2026-06-19', title: 'Kuota internet', category: 'Internet', amount: 60000, kind: 'out' },
-        { id: uid('x'), semester_id: sid, date: '2026-06-20', title: 'Fotokopi modul', category: 'Akademik', amount: 25000, kind: 'out' },
-        { id: uid('x'), semester_id: sid, date: '2026-06-20', title: 'Transport', category: 'Transport', amount: 40000, kind: 'out' }
-      ]
+      budgets: { [sid]: 0 },
+      schedule: [],
+      tasks: [],
+      tx: []
     };
   }
 
