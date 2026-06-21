@@ -1,0 +1,16 @@
+# Backup pribadi (jangan ikut ter-deploy)
+*-backup-*.json
+
+# Rahasia / kredensial sensitif
+.env
+.env.*
+service_role*
+*.secret
+
+# Sampah OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Catatan: js/config.js SENGAJA TIDAK diblokir — anon key aman di browser
+# dan file ini harus ikut ter-deploy ke GitHub Pages.
