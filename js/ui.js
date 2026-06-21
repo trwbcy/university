@@ -45,9 +45,19 @@
     }).join('') || '<div class="empty">Tidak ada deadline terdekat. Nikmati jeda ini.</div>';
 
     return '<div class="page page-today">'
-      + '<div class="ghost-num">' + esc(sem.code) + '</div>'
-      + '<div class="hero-title">' + esc(heroLine1(sem.title)) + '<span class="accent">.</span></div>'
-      + '<div class="hero-sub"><span class="rule"></span><span class="txt">Sistem Informasi · Universitas Terbuka — ' + esc(sem.sks) + ' SKS, ' + v.courseCount + ' mata kuliah, satu tujuan yang dijaga pelan-pelan.</span></div>'
+      + '<div class="hero-wrap">'
+      + '  <div class="hero-left">'
+      + '    <div class="ghost-num">' + esc(sem.code) + '</div>'
+      + '    <div class="hero-title">' + esc(heroLine1(sem.title)) + '<span class="accent">.</span></div>'
+      + '    <div class="hero-sub"><span class="rule"></span><span class="txt">Sistem Informasi · Universitas Terbuka — ' + esc(sem.sks) + ' SKS, ' + v.courseCount + ' mata kuliah, satu tujuan yang dijaga pelan-pelan.</span></div>'
+      + '  </div>'
+      + '  <div class="hero-chibi"><img src="assets/chibi.png" alt="Ilustrasi mahasiswa sedang belajar" loading="lazy"></div>'
+      + '</div>'
+      + '<div class="mantra reveal">'
+      + '  <span class="mantra-mark">"</span>'
+      + '  <p class="mantra-text">' + esc(v.mantra) + '</p>'
+      + '  <button class="mantra-next" onclick="App.nextMantra()" title="Mantra berikutnya">ganti →</button>'
+      + '</div>'
       + '<div class="stats reveal">'
       + stat(sem.ipk != null ? sem.ipk.toFixed(2) : '—', 'Target / IPK')
       + stat(pad(v.doneCount), 'Tugas Selesai')

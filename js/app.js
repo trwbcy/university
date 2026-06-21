@@ -16,8 +16,22 @@
     data: null,          // dataset penuh dari Store
     ready: false,
     session: null,       // sesi auth (cloud)
-    busy: false
+    busy: false,
+    mantraSkip: 0        // berapa kali user skip mantra hari ini
   };
+
+  /* ---- mantra harian ---- */
+  function dayNumber() {
+    // jumlah hari sejak epoch, dipakai sebagai indeks deterministik per tanggal
+    var n = new Date();
+    return Math.floor(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()) / 86400000);
+  }
+  function currentMantra() {
+    var list = window.MANTRAS || [];
+    if (list.length === 0) return '';
+    var idx = (dayNumber() + STATE.mantraSkip) % list.length;
+    return list[idx];
+  }
 
   /* ---- util tanggal ---- */
   function todayMid() { var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
@@ -85,6 +99,7 @@
 
     return {
       sem: sem || { code: '—', title: 'Belum ada semester', sks: 0, ipk: null },
+      mantra: currentMantra(),
       todayName: UI.DAYS[now.getDay()], todayDate: now.getDate() + ' ' + UI.MONTHS[now.getMonth()] + ' ' + now.getFullYear(),
       sessions: sessions, active: active, done: done, aktif: aktif, doneCount: done.length, tasksView: tasksView, showDone: STATE.showDone,
       jadwal: jadwal, courseCount: courseCount,
@@ -179,6 +194,7 @@
   var App = {
     go: function (tab) { STATE.tab = tab; STATE.draft = null; render(); },
     toggleArsip: function () { STATE.showDone = !STATE.showDone; render(); },
+    nextMantra: function () { STATE.mantraSkip++; render(); },
 
     switchSemester: function (id) {
       Store.setActiveSemester(id).then(function () { STATE.tab = 'today'; return refresh(); });

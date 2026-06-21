@@ -104,6 +104,19 @@ body {
 .hero-sub .rule { width: 46px; height: 2px; background: var(--ink); flex: none; }
 .hero-sub span.txt { font-size: 15px; color: #5a5a5a; max-width: 52ch; }
 
+/* ---- hero dengan chibi di kanan ---- */
+.hero-wrap { display: flex; align-items: center; gap: 24px; justify-content: space-between; }
+.hero-left { flex: 1; min-width: 0; }
+.hero-chibi { flex: none; width: 230px; max-width: 34%; }
+.hero-chibi img { width: 100%; height: auto; display: block; mix-blend-mode: multiply; }
+
+/* ---- mantra harian ---- */
+.mantra { position: relative; margin: 30px 0 8px; padding: 22px 26px 22px 30px; border-left: 3px solid var(--accent); background: var(--paper-2); border-radius: 0 12px 12px 0; display: flex; align-items: center; gap: 18px; }
+.mantra-mark { font-family: var(--display); font-weight: 900; font-size: 52px; line-height: 0; color: var(--accent-line); flex: none; align-self: flex-start; margin-top: 18px; }
+.mantra-text { font-family: var(--body); font-weight: 500; font-size: 17px; line-height: 1.5; color: var(--ink); margin: 0; flex: 1; font-style: italic; }
+.mantra-next { flex: none; font: 700 11px/1 var(--body); letter-spacing: .04em; color: var(--mut); background: none; border: 1px solid var(--line-2); padding: 8px 12px; border-radius: 20px; cursor: pointer; transition: color .15s ease, border-color .15s ease; }
+.mantra-next:hover { color: var(--accent); border-color: var(--accent-line); }
+
 /* ---- stat strip ---- */
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 42px; border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); }
 .stat { padding: 22px 0 22px 30px; border-right: 1px solid var(--line-2); }
@@ -246,6 +259,7 @@ body {
   .gloss-grid { grid-template-columns: 1fr; gap: 0; }
   .masthead { align-items: flex-start; }
   .row-sub.fixed-w { width: auto !important; }
+  .hero-chibi { width: 150px; max-width: 30%; }
 }
 
 @media (max-width: 560px) {
@@ -253,6 +267,11 @@ body {
   .h-page { font-size: 38px; }
   .row, .task-row { flex-wrap: wrap; gap: 10px; }
   .nav { gap: 16px; }
+  .hero-wrap { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .hero-chibi { width: 130px; max-width: 130px; align-self: flex-end; margin-top: -40px; }
+  .mantra { flex-wrap: wrap; gap: 12px; padding: 18px 20px; }
+  .mantra-mark { display: none; }
+  .mantra-next { margin-left: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
