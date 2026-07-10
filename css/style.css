@@ -334,11 +334,31 @@ body {
 .kat-admisi { background: #f2f2f2; color: var(--mut); }
 .kat-non { background: #e8f7ef; color: var(--green); }
 .kat-pasca { background: #fff; color: var(--mut); border-color: var(--line-2); }
+.kat-bantuan { background: #fff; color: var(--ink); border-color: var(--ink); }
 .prio-high { background: var(--accent); color: #fff; }
 .prio-med { background: #fff; color: var(--ink); border-color: var(--mut-2); }
 .prio-future { background: #e8f7ef; color: var(--green); }
 .prio-low { background: #f2f2f2; color: var(--mut); }
 .prio-none { background: #fff; color: var(--mut-2); border-color: var(--line-2); }
+
+/* kontak Hallo UT — card "Kalau Ada Kendala" (gaya quote box) */
+.ptc { margin-top: 44px; border-left: 3px solid var(--accent); background: var(--paper-2); border-radius: 0 14px 14px 0; padding: 26px 30px 28px; }
+.ptc-eyebrow { font: 800 11px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
+.ptc-title { font-family: var(--display); font-weight: 900; font-size: 30px; line-height: 1; letter-spacing: -.02em; margin: 10px 0 8px; }
+.ptc-sub { font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0 0 22px; max-width: 62ch; }
+.ptc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.ptc-item { display: block; text-decoration: none; border: 1px solid var(--line-2); background: var(--paper); border-radius: 12px; padding: 15px 17px; transition: border-color .15s ease, background .15s ease, transform .12s ease; }
+.ptc-item:hover { border-color: var(--accent-line); background: var(--accent-soft); transform: translateY(-1px); }
+.ptc-label { display: block; font: 800 9.5px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--mut); margin-bottom: 8px; }
+.ptc-val { display: block; font-family: var(--display); font-weight: 800; font-size: 18px; line-height: 1.1; color: var(--ink); letter-spacing: -.01em; word-break: break-word; }
+.ptc-item:hover .ptc-val { color: var(--accent); }
+.ptc-hint { display: block; font-size: 11.5px; color: var(--mut); margin-top: 6px; line-height: 1.4; }
+.ptc-hours { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line-2); }
+.ptc-hours ul { list-style: none; margin: 10px 0 0; padding: 0; }
+.ptc-hours li { display: flex; justify-content: space-between; gap: 16px; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+.ptc-hours li:last-child { border-bottom: none; }
+.ptc-day { font-weight: 700; color: var(--ink); }
+.ptc-time { font-family: var(--display); font-weight: 700; color: var(--ink-2); text-align: right; }
 
 /* ---- responsive ---- */
 @media (max-width: 880px) {
@@ -382,6 +402,12 @@ body {
   }
   .pt-row td[data-label="Nama"] { padding-top: 0; }
   .pt-nama { font-size: 20px; }
+
+  /* kontak Hallo UT: grid jadi satu kolom */
+  .ptc { padding: 22px 20px 24px; }
+  .ptc-grid { grid-template-columns: 1fr; }
+  .ptc-hours li { flex-wrap: wrap; gap: 2px; }
+  .ptc-time { text-align: left; }
 }
 
 @media (prefers-reduced-motion: reduce) {

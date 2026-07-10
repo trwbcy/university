@@ -72,11 +72,57 @@
       fungsi: 'Portal untuk mata kuliah berpraktikum.',
       kategori: 'Akademik — Pendukung', kat: 'pendukung',
       prioritas: 'Sesuai kebutuhan', prio: 'med'
+    },
+    {
+      url: 'https://sl.ut.ac.id/pengayaan', nama: 'BANC Pengayaan',
+      fungsi: 'Akses Bahan Ajar Non Cetak (BANC) — materi multimedia pelengkap modul cetak untuk mata kuliah bertanda #.',
+      kategori: 'Akademik — Pendukung', kat: 'pendukung',
+      prioritas: 'Sesuai kebutuhan saat belajar matkul bertanda #', prio: 'med'
+    },
+    {
+      url: 'https://hallo-ut.ut.ac.id', nama: 'Hallo UT',
+      fungsi: 'Contact center resmi UT — lapor kendala teknis, tanya administrasi, dan tracking masalah registrasi / bahan ajar.',
+      kategori: 'Bantuan / Support', kat: 'bantuan',
+      prioritas: 'Saat ada kendala', prio: 'med'
     }
   ];
 
   function katBadge(p) { return '<span class="pt-badge kat-' + p.kat + '">' + esc(p.kategori) + '</span>'; }
   function prioBadge(p) { return '<span class="pt-badge prio-' + p.prio + '">' + esc(p.prioritas) + '</span>'; }
+
+  /* satu kontak yang bisa diklik (tel/wa/sms/mailto) */
+  function contact(href, label, val, hint) {
+    return '<a class="ptc-item" href="' + escA(href) + '"' + (/^https?:/.test(href) ? ' target="_blank" rel="noopener noreferrer"' : '') + '>'
+      + '<span class="ptc-label">' + esc(label) + '</span>'
+      + '<span class="ptc-val">' + esc(val) + '</span>'
+      + (hint ? '<span class="ptc-hint">' + esc(hint) + '</span>' : '')
+      + '</a>';
+  }
+
+  /* section "Kalau Ada Kendala" — kontak Hallo UT */
+  function contactSection() {
+    var hours = [
+      ['Senin–Kamis', '08.00–19.30 WIB'],
+      ['Jumat', '08.00–20.00 WIB'],
+      ['Sabtu–Minggu', '09.00–14.00 WIB'],
+      ['Libur Nasional', 'situasional — cek info terbaru']
+    ].map(function (h) {
+      return '<li><span class="ptc-day">' + esc(h[0]) + '</span><span class="ptc-time">' + esc(h[1]) + '</span></li>';
+    }).join('');
+
+    return '<div class="ptc reveal">'
+      + '<div class="ptc-eyebrow">Bantuan Resmi</div>'
+      + '<h3 class="ptc-title">Kalau Ada Kendala</h3>'
+      + '<p class="ptc-sub">Hubungi <strong>Hallo UT</strong>, contact center resmi Universitas Terbuka — untuk kendala teknis, pertanyaan administrasi, sampai masalah registrasi dan bahan ajar.</p>'
+      + '<div class="ptc-grid">'
+      + contact('tel:1500024', 'Telepon', '1500024', 'Tambah 021 di depan bila perlu · +6221 dari luar negeri')
+      + contact('https://wa.me/6281141500024', 'WhatsApp', '0811 4150 0024', 'Chat langsung via WhatsApp')
+      + contact('sms:08119050024', 'SMS', '0811 905 0024', '')
+      + contact('mailto:hallo-ut@ecampus.ut.ac.id', 'Email', 'hallo-ut@ecampus.ut.ac.id', '')
+      + '</div>'
+      + '<div class="ptc-hours"><span class="ptc-label">Jam Operasional</span><ul>' + hours + '</ul></div>'
+      + '</div>';
+  }
 
   var rows = PORTALS.map(function (p) {
     var open = "window.open('" + escA(p.url) + "','_blank','noopener,noreferrer')";
@@ -103,6 +149,7 @@
     + '</table>'
     + '</div>'
     + '<p class="pt-note">Prioritas adalah panduan umum untuk mahasiswa S1 Sistem Informasi — sesuaikan dengan tahap studimu sendiri.</p>'
+    + contactSection()
     + '</div>';
 
   window.PORTAL_HTML = html;
