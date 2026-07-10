@@ -117,6 +117,16 @@ body {
 .mantra-next { flex: none; font: 700 11px/1 var(--body); letter-spacing: .04em; color: var(--mut); background: none; border: 1px solid var(--line-2); padding: 8px 12px; border-radius: 20px; cursor: pointer; transition: color .15s ease, border-color .15s ease; }
 .mantra-next:hover { color: var(--accent); border-color: var(--accent-line); }
 
+/* ---- NIM badge (subtle, di hero Hari ini) ---- */
+.nim-badge {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 16px;
+  font-family: var(--display); font-weight: 700; font-size: 12px; letter-spacing: .14em;
+  color: var(--mut); background: none; border: 1px solid var(--line-2);
+  padding: 7px 12px; border-radius: 20px; cursor: pointer;
+}
+.nim-badge:hover { color: var(--ink); border-color: var(--mut-2); }
+.nim-badge.empty { color: var(--accent); border-color: var(--accent-line); background: var(--accent-soft); letter-spacing: .04em; }
+
 /* ---- stat strip ---- */
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 42px; border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); }
 .stat { padding: 22px 0 22px 30px; border-right: 1px solid var(--line-2); }
@@ -297,6 +307,39 @@ body {
 .pk-taps li { padding: 4px 0; }
 .pk-note { font-size: 12.5px; line-height: 1.6; color: var(--mut); margin-top: 16px; }
 
+/* ---- Portal UT (tab referensi subdomain) ---- */
+.pt-scroll { overflow-x: auto; margin-top: 30px; }
+.pt-table { width: 100%; border-collapse: collapse; min-width: 760px; }
+.pt-table th {
+  font: 800 9.5px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--mut);
+  text-align: left; padding: 0 16px 12px 0; border-bottom: 2px solid var(--ink);
+}
+.pt-row { cursor: pointer; transition: background .14s ease; }
+.pt-row td { padding: 16px 16px 16px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.pt-row:hover { background: var(--paper-2); }
+.pt-row:hover .pt-nama { color: var(--accent); }
+.pt-row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.pt-link { font-family: var(--display); font-weight: 700; font-size: 13px; color: var(--ink-2); white-space: nowrap; }
+.pt-ext { color: var(--accent); font-weight: 800; }
+.pt-nama { font-family: var(--display); font-weight: 800; font-size: 17px; letter-spacing: -.01em; transition: color .14s ease; }
+.pt-fungsi { font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
+.pt-note { font-size: 12.5px; color: var(--mut); margin-top: 22px; font-style: italic; }
+
+/* badge kategori & prioritas */
+.pt-badge { display: inline-block; font: 800 9.5px/1.3 var(--body); letter-spacing: .06em; text-transform: uppercase; padding: 5px 9px; border-radius: 20px; white-space: nowrap; border: 1px solid transparent; }
+.kat-inti { background: var(--accent); color: #fff; }
+.kat-pendukung { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-line); }
+.kat-akhir { background: var(--ink); color: #fff; }
+.kat-umum { background: #fff; color: var(--ink-2); border-color: var(--mut-2); }
+.kat-admisi { background: #f2f2f2; color: var(--mut); }
+.kat-non { background: #e8f7ef; color: var(--green); }
+.kat-pasca { background: #fff; color: var(--mut); border-color: var(--line-2); }
+.prio-high { background: var(--accent); color: #fff; }
+.prio-med { background: #fff; color: var(--ink); border-color: var(--mut-2); }
+.prio-future { background: #e8f7ef; color: var(--green); }
+.prio-low { background: #f2f2f2; color: var(--mut); }
+.prio-none { background: #fff; color: var(--mut-2); border-color: var(--line-2); }
+
 /* ---- responsive ---- */
 @media (max-width: 880px) {
   .pk-chips { grid-template-columns: repeat(4, 1fr); }
@@ -324,6 +367,21 @@ body {
   .mantra { flex-wrap: wrap; gap: 12px; padding: 18px 20px; }
   .mantra-mark { display: none; }
   .mantra-next { margin-left: auto; }
+
+  /* Portal UT: tabel jadi kartu, tanpa scroll horizontal */
+  .pt-scroll { overflow-x: visible; }
+  .pt-table { min-width: 0; }
+  .pt-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .pt-table, .pt-table tbody, .pt-row, .pt-row td { display: block; width: 100%; }
+  .pt-row { border: 1px solid var(--line-2); border-radius: 14px; padding: 16px 18px; margin-bottom: 14px; }
+  .pt-row:hover { background: none; }
+  .pt-row td { padding: 6px 0; border: none; }
+  .pt-row td[data-label]::before {
+    content: attr(data-label); display: block;
+    font: 800 9px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--mut-2); margin-bottom: 5px;
+  }
+  .pt-row td[data-label="Nama"] { padding-top: 0; }
+  .pt-nama { font-size: 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

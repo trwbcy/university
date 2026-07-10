@@ -58,6 +58,15 @@ create table if not exists public.budgets (
   primary key (user_id, semester_id)
 );
 
+-- Profil pengguna: satu baris per akun. Menyimpan info identitas ringan
+-- seperti NIM. JANGAN simpan password/PIN/kredensial apa pun di sini —
+-- autentikasi sepenuhnya ditangani Supabase Auth (auth.users).
+create table if not exists public.profiles (
+  user_id     uuid primary key references auth.users(id) on delete cascade,
+  nim         text,
+  created_at  timestamptz default now()
+);
+
 -- ---- ROW LEVEL SECURITY ---------------------------------------------------
 -- Tiap pengguna hanya bisa membaca/menulis barisnya sendiri.
 
@@ -66,12 +75,13 @@ alter table public.schedule  enable row level security;
 alter table public.tasks     enable row level security;
 alter table public.tx        enable row level security;
 alter table public.budgets   enable row level security;
+alter table public.profiles  enable row level security;
 
 -- pola kebijakan sama untuk tiap tabel: user_id = auth.uid()
 do $$
 declare t text;
 begin
-  foreach t in array array['semesters','schedule','tasks','tx','budgets']
+  foreach t in array array['semesters','schedule','tasks','tx','budgets','profiles']
   loop
     execute format('drop policy if exists "own_select" on public.%I;', t);
     execute format('drop policy if exists "own_insert" on public.%I;', t);

@@ -17,7 +17,8 @@
     ready: false,
     session: null,       // sesi auth (cloud)
     busy: false,
-    mantraSkip: 0        // berapa kali user skip mantra hari ini
+    mantraSkip: 0,       // berapa kali user skip mantra hari ini
+    profile: { nim: '' } // profil pengguna (mis. NIM), dari Store
   };
 
   /* ---- mantra harian ---- */
@@ -104,6 +105,7 @@
       sessions: sessions, active: active, done: done, aktif: aktif, doneCount: done.length, tasksView: tasksView, showDone: STATE.showDone,
       jadwal: jadwal, courseCount: courseCount,
       semNo: sem ? (Number(String(sem.code).replace(/[^\d]/g, '')) || null) : null,
+      nim: (STATE.profile && STATE.profile.nim) || '',
       budgetR: UI.rupiah(budget), keluarR: UI.rupiah(keluar), sisaR: UI.rupiah(sisa), pctStr: pct + '%', catList: catList, txView: txView
     };
   }
@@ -146,6 +148,7 @@
     else if (STATE.tab === 'tugas') html = UI.tugas(v, d && d.kind === 'task' ? draftHtml : '');
     else if (STATE.tab === 'uang') html = UI.uang(v, d && d.kind === 'tx' ? draftHtml : '');
     else if (STATE.tab === 'riwayat') html = UI.riwayat({ history: deriveHistory() });
+    else if (STATE.tab === 'portal') html = window.PORTAL_HTML;
     else if (STATE.tab === 'gloss') html = window.GLOSS_HTML;
     else html = UI.today(v);
 
@@ -188,7 +191,11 @@
   }
 
   function refresh() {
-    return Store.getAll().then(function (d) { STATE.data = d; render(); });
+    return Promise.all([Store.getAll(), Store.getProfile()]).then(function (r) {
+      STATE.data = r[0];
+      STATE.profile = r[1] || { nim: '' };
+      render();
+    });
   }
 
   /* ---- APP actions ---- */
@@ -226,6 +233,24 @@
       if (val == null) return;
       var n = Number(String(val).replace(/[^\d]/g, '')) || 0;
       Store.setBudget(sem.id, n).then(refresh);
+    },
+
+    editNim: function () {
+      var cur = (STATE.profile && STATE.profile.nim) || '';
+      var val = prompt('NIM kamu (angka saja). Kosongkan untuk menyembunyikan:', cur);
+      if (val == null) return;
+      var n = String(val).replace(/[^\d]/g, '');
+      Store.setProfile({ nim: n }).then(function () {
+        STATE.profile = Object.assign({}, STATE.profile, { nim: n });
+        render();
+      }).catch(function (e) {
+        var m = (e && e.message) || String(e);
+        if (/relation|does not exist|schema cache|find the table/i.test(m)) {
+          alert('Tabel "profiles" belum ada di Supabase. Jalankan sql/schema.sql terbaru di SQL Editor, lalu coba lagi.');
+        } else {
+          alert('Gagal menyimpan NIM: ' + m);
+        }
+      });
     },
 
     draft: function (key, val) { if (STATE.draft) STATE.draft.f[key] = val; },

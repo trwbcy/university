@@ -20,7 +20,7 @@
 
   /* ---- NAV ---- */
   UI.nav = function (tab) {
-    var tabs = [['today', 'Hari ini'], ['jadwal', 'Jadwal'], ['tugas', 'Tugas'], ['uang', 'Uang'], ['riwayat', 'Riwayat'], ['gloss', 'Glosarium UT']];
+    var tabs = [['today', 'Hari ini'], ['jadwal', 'Jadwal'], ['tugas', 'Tugas'], ['uang', 'Uang'], ['riwayat', 'Riwayat'], ['portal', 'Portal UT'], ['gloss', 'Glosarium UT']];
     return tabs.map(function (t) {
       return '<button class="navword ' + (tab === t[0] ? 'active' : '') + '" onclick="App.go(\'' + t[0] + '\')">' + t[1] + '</button>';
     }).join('');
@@ -50,6 +50,9 @@
       + '    <div class="ghost-num">' + esc(sem.code) + '</div>'
       + '    <div class="hero-title">' + esc(heroLine1(sem.title)) + '<span class="accent">.</span></div>'
       + '    <div class="hero-sub"><span class="rule"></span><span class="txt">Sistem Informasi · Universitas Terbuka — ' + esc(sem.sks) + ' SKS, ' + v.courseCount + ' mata kuliah, satu tujuan yang dijaga pelan-pelan.</span></div>'
+      + (v.nim
+          ? '    <button class="nim-badge" onclick="App.editNim()" title="Ubah NIM">NIM ' + esc(v.nim) + '</button>'
+          : '    <button class="nim-badge empty" onclick="App.editNim()" title="Tambahkan NIM">+ Tambah NIM</button>')
       + '  </div>'
       + '  <div class="hero-chibi"><img src="assets/chibi.png" alt="Ilustrasi mahasiswa sedang belajar" loading="lazy"></div>'
       + '</div>'

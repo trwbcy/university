@@ -42,7 +42,8 @@
       budgets: { [sid]: 0 },
       schedule: [],
       tasks: [],
-      tx: []
+      tx: [],
+      profile: { nim: '' }
     };
   }
 
@@ -52,7 +53,7 @@
   function LocalAdapter() {
     var data = null;
     function load() {
-      try { var r = localStorage.getItem(LKEY); if (r) return JSON.parse(r); } catch (e) {}
+      try { var r = localStorage.getItem(LKEY); if (r) { var d = JSON.parse(r); if (!d.profile) d.profile = { nim: '' }; return d; } } catch (e) {}
       return seed();
     }
     function save() { try { localStorage.setItem(LKEY, JSON.stringify(data)); } catch (e) {} }
@@ -76,7 +77,10 @@
       remove: function (table, id) { data[table] = data[table].filter(function (x){return x.id!==id;}); save(); return Promise.resolve(); },
       setBudget: function (sid, amt) { data.budgets[sid] = amt; save(); return Promise.resolve(); },
 
-      replaceAll: function (next) { data = next; save(); return Promise.resolve(); }
+      getProfile: function () { return Promise.resolve(Object.assign({ nim: '' }, data.profile)); },
+      setProfile: function (patch) { data.profile = Object.assign({ nim: '' }, data.profile, patch); save(); return Promise.resolve(data.profile); },
+
+      replaceAll: function (next) { if (!next.profile) next.profile = { nim: '' }; data = next; save(); return Promise.resolve(); }
     };
   }
 
@@ -146,7 +150,18 @@
       },
       update: function (table, id, patch) { return sb.from(table).update(patch).eq('id', id).then(thrower); },
       remove: function (table, id) { return sb.from(table).delete().eq('id', id).then(thrower); },
-      setBudget: function (sid, amt) { return sb.from('budgets').upsert({ user_id: uidKey, semester_id: sid, amount: amt }).then(thrower); }
+      setBudget: function (sid, amt) { return sb.from('budgets').upsert({ user_id: uidKey, semester_id: sid, amount: amt }).then(thrower); },
+
+      getProfile: function () {
+        return sb.from('profiles').select('nim').eq('user_id', uidKey).maybeSingle().then(function (r) {
+          if (r.error) throw r.error;
+          return { nim: (r.data && r.data.nim) || '' };
+        });
+      },
+      setProfile: function (patch) {
+        var rec = Object.assign({ user_id: uidKey }, patch);
+        return sb.from('profiles').upsert(rec).then(thrower).then(function () { return patch; });
+      }
     };
 
     function thrower(res) { if (res && res.error) throw res.error; return res; }
@@ -229,6 +244,13 @@
     update: function (t, id, p) { return adapter.update(t, id, p); },
     remove: function (t, id) { return adapter.remove(t, id); },
     setBudget: function (sid, amt) { return adapter.setBudget(sid, amt); },
+
+    /* ---- profil pengguna (mis. NIM) ----
+       getProfile menelan error supaya boot tetap jalan meski tabel
+       profiles belum dibuat di Supabase; setProfile membiarkan error
+       naik agar pemanggil bisa memberi tahu pengguna. */
+    getProfile: function () { return adapter.getProfile().catch(function () { return { nim: '' }; }); },
+    setProfile: function (patch) { return adapter.setProfile(patch); },
 
     /* ---- backup lokal (selalu tersedia) ---- */
     exportData: function () {
