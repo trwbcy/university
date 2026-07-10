@@ -90,7 +90,66 @@
         + (day.isToday ? '<div style="font:800 10px/1 var(--body); letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-top:8px;">● Hari ini</div>' : '')
         + '</div><div>' + items + '</div></div>';
     }).join('');
-    return '<div class="page">' + pageHead('Minggu Ini', 'JADWAL', 'App.add(\'session\')', '+ Tambah sesi') + (draftHtml || '') + UI.timelineSVG() + '<div style="margin-top:12px;">' + rows + '</div></div>';
+    return '<div class="page">' + pageHead('Minggu Ini', 'JADWAL', 'App.add(\'session\')', '+ Tambah sesi') + (draftHtml || '') + UI.timelineSVG() + '<div style="margin-top:12px;">' + rows + '</div>' + UI.paket(v.semNo) + '</div>';
+  };
+
+  /* ---- PAKET ARAHAN PER SEMESTER (kurikulum prodi) ---- */
+  UI.paket = function (activeSemNo) {
+    var K = window.KURIKULUM;
+    if (!K) return '';
+
+    var chips = K.semesters.map(function (s) {
+      return '<div class="pk-chip' + (s.n === activeSemNo ? ' now' : '') + '"><span class="n">' + s.n + '</span><span class="s">' + s.sks + ' sks</span></div>';
+    }).join('');
+
+    var blocks = K.semesters.map(function (s) {
+      var isNow = s.n === activeSemNo;
+      var rows = s.items.map(function (it) {
+        var name, sub = '';
+        if (it.options) {
+          name = '<span class="pk-pilih">' + esc(it.pilihLabel) + '</span>';
+          sub = '<ul class="pk-opts">' + it.options.map(function (o) {
+            return '<li><span class="pk-code">' + esc(o.code) + '</span> ' + esc(o.name) + (o.ket ? ' <span class="pk-ket">' + esc(o.ket) + '</span>' : '') + '</li>';
+          }).join('') + '</ul>';
+        } else {
+          name = esc(it.name);
+        }
+        return '<tr>'
+          + '<td class="pk-no">' + it.no + '</td>'
+          + '<td class="pk-code">' + esc(it.code || '—') + '</td>'
+          + '<td class="pk-name">' + name + sub + '</td>'
+          + '<td class="pk-sks">' + it.sks + '</td>'
+          + '<td class="pk-ujian">' + esc(it.ujian) + '</td>'
+          + '<td>' + (it.ket ? '<span class="pk-ket">' + esc(it.ket) + '</span>' : '') + '</td>'
+          + '</tr>';
+      }).join('');
+
+      return '<details class="pk-block' + (isNow ? ' now' : '') + '"' + (isNow ? ' open' : '') + '>'
+        + '<summary><span class="pk-sum-n">Semester ' + s.n + '</span>'
+        + '<span class="pk-sum-s">' + s.sks + ' SKS · ' + s.items.length + ' mata kuliah</span>'
+        + (isNow ? '<span class="pk-sum-now">● Sedang berjalan</span>' : '') + '</summary>'
+        + '<div class="pk-scroll"><table class="pk-table">'
+        + '<thead><tr><th>No</th><th>Kode</th><th>Mata Kuliah</th><th>SKS</th><th>Ujian</th><th>Ket</th></tr></thead>'
+        + '<tbody>' + rows + '</tbody></table></div>'
+        + '</details>';
+    }).join('');
+
+    var legenda = K.legenda.map(function (l) {
+      return '<div class="pk-leg"><span class="pk-ket">' + esc(l[0]) + '</span><span>' + esc(l[1]) + '</span></div>';
+    }).join('');
+    var taps = K.taps.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('');
+
+    return '<div class="pk reveal">'
+      + '<div class="section-head" style="margin-top:44px;"><div class="seclabel">Paket Arahan Per Semester</div>'
+      + '<div class="row-sub">' + esc(K.prodi) + ' · ' + K.totalSks + ' SKS</div></div>'
+      + '<div class="hero-sub" style="margin:0 0 22px;"><span class="rule"></span><span class="txt">Racikan SKS yang disarankan katalog untuk tiap semester. Ikuti kalau ingin lulus delapan semester, geser kalau hidup bilang lain.</span></div>'
+      + '<div class="pk-chips">' + chips + '</div>'
+      + blocks
+      + '<div class="pk-foot">'
+      + '<div><div class="seclabel" style="margin-bottom:12px;">Keterangan</div>' + legenda + '</div>'
+      + '<div><div class="seclabel" style="margin-bottom:12px;">Prasyarat TAPS</div><ul class="pk-taps">' + taps + '</ul>'
+      + '<p class="pk-note">Nilai kelulusan mata kuliah praktik/berpraktik minimal C. Tugas 1, 2, dan 3 untuk mata kuliah BPro wajib lengkap diunggah ke elearning.ut.ac.id — kalau satu tidak dikerjakan, nilainya E.</p></div>'
+      + '</div></div>';
   };
 
   /* ---- TUGAS ---- */

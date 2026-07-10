@@ -247,8 +247,60 @@ body {
 .tl-arrow { stroke: var(--mut-2); stroke-width: 1.5; fill: none; }
 .tl-rule { stroke: var(--line-2); stroke-width: 1; }
 
+/* ---- paket arahan per semester (tab Jadwal) ---- */
+.pk { margin-top: 10px; }
+.pk-chips { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; margin-bottom: 26px; }
+.pk-chip { border: 1px solid var(--line-2); border-radius: 10px; padding: 12px 6px; text-align: center; }
+.pk-chip .n { display: block; font-family: var(--display); font-weight: 900; font-size: 26px; line-height: 1; }
+.pk-chip .s { display: block; font: 700 10px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--mut); margin-top: 6px; }
+.pk-chip.now { background: var(--ink); border-color: var(--ink); color: #fff; }
+.pk-chip.now .s { color: var(--mut-2); }
+
+.pk-block { border-top: 1px solid var(--line-2); }
+.pk-block:last-of-type { border-bottom: 1px solid var(--line-2); }
+.pk-block > summary {
+  display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  padding: 20px 0; cursor: pointer; list-style: none;
+}
+.pk-block > summary::-webkit-details-marker { display: none; }
+.pk-block > summary::before {
+  content: '+'; font-family: var(--display); font-weight: 700; font-size: 20px;
+  color: var(--mut-2); width: 18px; flex: none;
+}
+.pk-block[open] > summary::before { content: '–'; color: var(--accent); }
+.pk-sum-n { font-family: var(--display); font-weight: 900; font-size: 28px; letter-spacing: -.02em; }
+.pk-sum-s { font-size: 13px; color: var(--mut); flex: 1; }
+.pk-sum-now { font: 800 10px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+
+.pk-scroll { overflow-x: auto; padding-bottom: 12px; }
+.pk-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+.pk-table th {
+  font: 800 9.5px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--mut);
+  text-align: left; padding: 0 12px 10px 0; border-bottom: 1px solid var(--line-2);
+}
+.pk-table td { padding: 12px 12px 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+.pk-table tr:last-child td { border-bottom: none; }
+.pk-no { color: var(--mut-2); font-size: 12px; width: 34px; }
+.pk-code { font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: .02em; white-space: nowrap; }
+.pk-name { font-weight: 600; }
+.pk-sks { font-family: var(--display); font-weight: 800; font-size: 16px; width: 44px; }
+.pk-ujian { font-size: 13px; color: var(--mut); width: 56px; }
+.pk-ket { font: 800 9px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 4px 7px; border-radius: 20px; white-space: nowrap; }
+.pk-pilih { font-weight: 700; font-style: italic; color: var(--ink-2); }
+.pk-opts { list-style: none; margin: 8px 0 0; padding: 0 0 0 14px; border-left: 2px solid var(--line-2); }
+.pk-opts li { font-size: 13.5px; font-weight: 500; color: var(--ink-2); padding: 4px 0; }
+
+.pk-foot { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 34px; }
+.pk-leg { display: flex; align-items: baseline; gap: 12px; font-size: 13px; color: var(--ink-2); padding: 7px 0; }
+.pk-leg .pk-ket { flex: none; }
+.pk-taps { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-2); }
+.pk-taps li { padding: 4px 0; }
+.pk-note { font-size: 12.5px; line-height: 1.6; color: var(--mut); margin-top: 16px; }
+
 /* ---- responsive ---- */
 @media (max-width: 880px) {
+  .pk-chips { grid-template-columns: repeat(4, 1fr); }
+  .pk-foot { grid-template-columns: 1fr; gap: 32px; }
   :root { --pad-x: 22px; }
   .hero-title { font-size: 52px; margin-top: -26px; }
   .ghost-num { font-size: 92px; }

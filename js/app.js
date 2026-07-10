@@ -103,6 +103,7 @@
       todayName: UI.DAYS[now.getDay()], todayDate: now.getDate() + ' ' + UI.MONTHS[now.getMonth()] + ' ' + now.getFullYear(),
       sessions: sessions, active: active, done: done, aktif: aktif, doneCount: done.length, tasksView: tasksView, showDone: STATE.showDone,
       jadwal: jadwal, courseCount: courseCount,
+      semNo: sem ? (Number(String(sem.code).replace(/[^\d]/g, '')) || null) : null,
       budgetR: UI.rupiah(budget), keluarR: UI.rupiah(keluar), sisaR: UI.rupiah(sisa), pctStr: pct + '%', catList: catList, txView: txView
     };
   }
