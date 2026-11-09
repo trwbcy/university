@@ -66,7 +66,7 @@
       + stat(pad(v.doneCount), 'Tugas Selesai')
       + stat(pad(v.aktif), 'Tugas Aktif', true)
       + '</div>'
-      + '<div class="section reveal"><div class="section-head"><div class="seclabel">Sesi Belajar — ' + esc(v.todayName) + '</div><div class="row-sub">' + esc(v.todayDate) + '</div></div>' + sessions + '</div>'
+      + (v.sessions.length ? '<div class="section reveal"><div class="section-head"><div class="seclabel">Sesi Belajar — ' + esc(v.todayName) + '</div><div class="row-sub">' + esc(v.todayDate) + '</div></div>' + sessions + '</div>' : '')
       + '<div class="section reveal"><div class="seclabel" style="margin-bottom:18px;">Deadline Terdekat</div>' + deadlines + '</div>'
       + '</div>';
   };

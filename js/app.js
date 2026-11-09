@@ -58,7 +58,6 @@
     var sessions = sched.filter(function (s) { return Number(s.day) === now.getDay(); })
       .sort(function (a, b) { return a.time.localeCompare(b.time); })
       .map(function (s) { return { time: s.time, label: s.type + ' · ' + s.course, meta: s.meta }; });
-    if (sessions.length === 0) sessions = [{ time: '—', label: 'Belajar mandiri · baca BMP', meta: 'Santai' }];
 
     function mapTask(rt) {
       var diff = Math.round((new Date(rt.due + 'T00:00:00') - tm) / 86400000);
